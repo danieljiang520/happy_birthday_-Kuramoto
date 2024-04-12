@@ -123,7 +123,6 @@ function Hout = kuramoto(n,kappa,beta)
     rotate = []; txt = []; ax2 = []; psi = [];
  
     % our code
-    theta_list = [];
 
     % rng(0)
     stop = 0;
@@ -145,7 +144,9 @@ function Hout = kuramoto(n,kappa,beta)
                 tspan = t:s:t+quit;
             end
             [t,theta] = ode45(@ode,tspan,theta,options);
-            theta_list = [theta_list; theta];
+            
+            writematrix(theta,'test.csv','WriteMode','append');
+
             t = t(end);
             theta = theta(end,:)';
 
@@ -155,8 +156,7 @@ function Hout = kuramoto(n,kappa,beta)
         Hout = H;
     end
 
-    writematrix(theta)
-    type 'thetas.txt'
+    
 
 %     close(gcf)
    
