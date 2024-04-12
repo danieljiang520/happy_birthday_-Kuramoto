@@ -122,9 +122,12 @@ function Hout = kuramoto(n,kappa,beta)
     theta = []; omega = []; colors = []; r = [];
     rotate = []; txt = []; ax2 = []; psi = [];
  
+    % our code
+    theta_list = [];
+
     % rng(0)
     stop = 0;
-    while ~stop
+%     while ~stop
         init_controls
         init_figure
         init_plot
@@ -142,15 +145,20 @@ function Hout = kuramoto(n,kappa,beta)
                 tspan = t:s:t+quit;
             end
             [t,theta] = ode45(@ode,tspan,theta,options);
+            theta_list = [theta_list; theta];
             t = t(end);
             theta = theta(end,:)';
 
         end
-    end
+%     end
     if wanth
         Hout = H;
     end
-    close(gcf)
+
+    writematrix(theta)
+    type 'thetas.txt'
+
+%     close(gcf)
    
 %-------------------------------------------------------------
 
