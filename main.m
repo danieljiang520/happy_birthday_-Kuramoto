@@ -1,37 +1,102 @@
-% h = kuramoto(3,1,0);
+clc;clear;close all;
 
-% Name of the CSV file
-filename = 'default.csv';
+% File names for the CSV files
+filename1 = 'default.csv';  % File for pitch data
+filename2 = 'quick.csv';  % File for rhythm data
 
-% Read the data from the CSV file
-data = readtable(filename, 'ReadVariableNames', false);
+% Read data from the CSV files
+data1 = readtable(filename1, 'ReadVariableNames', false);
+data2 = readtable(filename2, 'ReadVariableNames', false);
 
-% Extract theta values for each oscillator from the table
-theta1 = data.Var1(600:800);
-theta2 = data.Var2(600:800);
-theta3 = data.Var3(600:800);
+% Extract theta values for each oscillator from both files
+theta1_pitch = data1.Var1 * 10;  % Scale pitch theta values to shorten the period
+theta2_pitch = data1.Var2 * 10;
+theta3_pitch = data1.Var3 * 10;
 
-% Compute the sine of theta values
-sin_theta1 = sin(theta1);
-sin_theta2 = sin(theta2);
-sin_theta3 = sin(theta3);
+theta1_rhythm = data2.Var1;
+theta2_rhythm = data2.Var2;
+theta3_rhythm = data2.Var3;
 
-% Create a time vector assuming each row is at consecutive equal time intervals
-time = 0:(length(theta1)-1);
+% Compute the sine of theta values for pitch to use as the Z coordinate
+sin_theta1_pitch = sin(theta1_pitch);
+sin_theta2_pitch = sin(theta2_pitch);
+sin_theta3_pitch = sin(theta3_pitch);
 
-% Plot the results
+% Number of points (assumes both files have the same length)
+numPoints = height(data1);
+
+% Number of points to retain in the trace
+traceLength = 10;  % Adjust this to show more or fewer points
+
+% Create a figure for plotting
 figure;
 hold on;
-plot(time, sin_theta1, 'r-', 'LineWidth', 0.5);
-plot(time, sin_theta2, 'g-', 'LineWidth', 0.5);
-plot(time, sin_theta3, 'b-', 'LineWidth', 0.5);
+axis equal;
+xlabel('Cosine Rhythm');
+ylabel('Sine Rhythm');
+zlabel('Sine Pitch');
+title('3D Visualization of Synchronization with Limited Trace');
+grid on;
+xlim([-1.5 1.5]);
+ylim([-1.5 1.5]);
+zlim([-1.5 1.5]);
+
+% Plot unit circle in the rhythm plane
+theta = linspace(0, 2*pi, 100);
+plot3(cos(theta), sin(theta), zeros(size(theta)), 'k--'); % Circle at z=0
+view(3);
+
+% Initialize arrays to store the trace points
+traceX1 = [];
+traceY1 = [];
+traceZ1 = [];
+traceX2 = [];
+traceY2 = [];
+traceZ2 = [];
+traceX3 = [];
+traceY3 = [];
+traceZ3 = [];
+
+% Animation loop
+for k = 600:900
+    % Update trace arrays
+    traceX1 = [traceX1, cos(theta1_rhythm(k))];
+    traceY1 = [traceY1, sin(theta1_rhythm(k))];
+    traceZ1 = [traceZ1, sin_theta1_pitch(k)];
+    traceX2 = [traceX2, cos(theta2_rhythm(k))];
+    traceY2 = [traceY2, sin(theta2_rhythm(k))];
+    traceZ2 = [traceZ2, sin_theta2_pitch(k)];
+    traceX3 = [traceX3, cos(theta3_rhythm(k))];
+    traceY3 = [traceY3, sin(theta3_rhythm(k))];
+    traceZ3 = [traceZ3, sin_theta3_pitch(k)];
+
+    % Limit the trace to the last 'traceLength' points
+    if length(traceX1) > traceLength
+        traceX1 = traceX1(end-traceLength+1:end);
+        traceY1 = traceY1(end-traceLength+1:end);
+        traceZ1 = traceZ1(end-traceLength+1:end);
+        traceX2 = traceX2(end-traceLength+1:end);
+        traceY2 = traceY2(end-traceLength+1:end);
+        traceZ2 = traceZ2(end-traceLength+1:end);
+        traceX3 = traceX3(end-traceLength+1:end);
+        traceY3 = traceY3(end-traceLength+1:end);
+        traceZ3 = traceZ3(end-traceLength+1:end);
+    end
+
+    % Clear previous points for animation clarity
+    cla;
+    
+    % Redraw unit circle
+    plot3(cos(theta), sin(theta), zeros(size(theta)), 'k--');
+
+    % Draw lines for the traces
+    plot3(traceX1, traceY1, traceZ1, 'r-');
+    plot3(traceX2, traceY2, traceZ2, 'g-');
+    plot3(traceX3, traceY3, traceZ3, 'b-');
+
+    % Optional: Pause to visualize the animation effect
+    pause(0.05);
+end
+
 hold off;
 
-% Enhancing the plot
-title('Sine of Theta Values Over Time for Three Oscillators');
-xlabel('Time (arbitrary units)');
-ylabel('Sine of Theta');
-legend('Oscillator 1', 'Oscillator 2', 'Oscillator 3');
-
-% Grid on for better visualization
-grid on;
