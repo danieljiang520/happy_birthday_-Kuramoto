@@ -123,6 +123,7 @@ function Hout = kuramoto(n,kappa,beta)
     rotate = []; txt = []; ax2 = []; psi = [];
  
     % our code
+    delete test.csv
 
     % rng(0)
     stop = 0;

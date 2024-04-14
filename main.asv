@@ -7,9 +7,9 @@ filename = 'default.csv';
 data = readtable(filename, 'ReadVariableNames', false);
 
 % Extract theta values for each oscillator from the table
-theta1 = data.Var1(600:800);
-theta2 = data.Var2(600:800);
-theta3 = data.Var3(600:800);
+theta1 = data.Var1;
+theta2 = data.Var2;
+theta3 = data.Var3;
 
 % Compute the sine of theta values
 sin_theta1 = sin(theta1);
@@ -17,7 +17,7 @@ sin_theta2 = sin(theta2);
 sin_theta3 = sin(theta3);
 
 % Create a time vector assuming each row is at consecutive equal time intervals
-time = 0:(length(theta1)-1);
+time = 0:0.1:(length(theta1)-1)*0.1;
 
 % Plot the results
 figure;
