@@ -1,15 +1,12 @@
 clc;clear;close all;
 
-% File names for the CSV files
-filename1 = 'default.csv';  % File for pitch data
-filename2 = 'quick.csv';  % File for rhythm data
+filename1 = 'default.csv';  % pitch data
+filename2 = 'quick.csv';  % rhythm data
 
-% Read data from the CSV files
 data1 = readtable(filename1, 'ReadVariableNames', false);
 data2 = readtable(filename2, 'ReadVariableNames', false);
 
-% Extract theta values for each oscillator from both files
-theta1_pitch = data1.Var1 * 10;  % Scale pitch theta values to shorten the period
+theta1_pitch = data1.Var1 * 10;  
 theta2_pitch = data1.Var2 * 10;
 theta3_pitch = data1.Var3 * 10;
 
@@ -17,18 +14,15 @@ theta1_rhythm = data2.Var1;
 theta2_rhythm = data2.Var2;
 theta3_rhythm = data2.Var3;
 
-% Compute the sine of theta values for pitch to use as the Z coordinate
+% Compute the sine 
 sin_theta1_pitch = sin(theta1_pitch);
 sin_theta2_pitch = sin(theta2_pitch);
 sin_theta3_pitch = sin(theta3_pitch);
 
-% Number of points (assumes both files have the same length)
 numPoints = height(data1);
+traceLength = 10;  
 
-% Number of points to retain in the trace
-traceLength = 10;  % Adjust this to show more or fewer points
-
-% Create a figure for plotting
+%% Create a figure for plotting
 figure;
 hold on;
 axis equal;
@@ -41,7 +35,7 @@ xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
 zlim([-1.5 1.5]);
 
-% Plot unit circle in the rhythm plane
+% Plot unit circle
 theta = linspace(0, 2*pi, 100);
 plot3(cos(theta), sin(theta), zeros(size(theta)), 'k--'); % Circle at z=0
 view(3);
@@ -58,7 +52,7 @@ traceY3 = [];
 traceZ3 = [];
 
 % Animation loop
-for k = 600:900
+for k = 1:1000
     % Update trace arrays
     traceX1 = [traceX1, cos(theta1_rhythm(k))];
     traceY1 = [traceY1, sin(theta1_rhythm(k))];
@@ -70,7 +64,6 @@ for k = 600:900
     traceY3 = [traceY3, sin(theta3_rhythm(k))];
     traceZ3 = [traceZ3, sin_theta3_pitch(k)];
 
-    % Limit the trace to the last 'traceLength' points
     if length(traceX1) > traceLength
         traceX1 = traceX1(end-traceLength+1:end);
         traceY1 = traceY1(end-traceLength+1:end);
