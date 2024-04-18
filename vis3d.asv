@@ -1,10 +1,11 @@
 clc;clear;close all;
 
-filename1 = 'default.csv';  % pitch data
-filename2 = 'quick.csv';  % rhythm data
+filename1 = 'default.csv';  % pitch data N=3, K=1
+filename2 = 'quick.csv';  % rhythm data N=3, K=5,
 
 data1 = readtable(filename1, 'ReadVariableNames', false);
 data2 = readtable(filename2, 'ReadVariableNames', false);
+N 
 
 theta1_pitch = data1.Var1 * 10;  
 theta2_pitch = data1.Var2 * 10;
@@ -29,7 +30,7 @@ axis equal;
 xlabel('Cosine Rhythm');
 ylabel('Sine Rhythm');
 zlabel('Sine Pitch');
-title('3D Visualization of Synchronization with Limited Trace');
+title(sprintf('Synchronization of Rhythm and Pitch: N=%d, k_r=%d, k_p=%d'),N,k_r,k_p);
 grid on;
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);
