@@ -1,2 +1,2 @@
 clc;clear;close all;
-h = kuramoto(3,0,0);
+h = kuramoto(100,5,0.1);

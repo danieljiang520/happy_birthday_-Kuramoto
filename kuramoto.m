@@ -268,7 +268,7 @@ function Hout = kuramoto(n,kappa,beta)
         pot = true;  % Graph potential or order parameter.
         uni = true;  % Uniform distribution of omega.
         quit = inf;  % 0 <= t <= quit.
-        delta = 200*(1+double(preset==3));
+        delta = 50*(1+double(preset==3));
         % delta = 800;
         if wanth
             quit = delta;
@@ -523,7 +523,7 @@ function Hout = kuramoto(n,kappa,beta)
     end
 
     function unicb(arg,~)
-        uni = get(arg,'value') == 1;
+        uni = 0;%get(arg,'value') == 1;
         if uni
             set(arg,'string','uniform / random');
         else

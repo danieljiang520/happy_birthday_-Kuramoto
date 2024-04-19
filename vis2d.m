@@ -1,14 +1,18 @@
 % h = kuramoto(3,1,0);
 
 % Name of the CSV file
-filename = 'quick.csv';
+filename = 'no_coupling.csv';
+type = "No Coupling";
+N = 3;
+K = 0;
+
 
 % Read the data from the CSV file
 data = readtable(filename, 'ReadVariableNames', false);
 
 % Extract theta values for each oscillator from the table
 range_start = 1;
-range_end = 800;
+range_end = 500;
 theta1 = data.Var1(range_start:range_end);
 theta2 = data.Var2(range_start:range_end);
 theta3 = data.Var3(range_start:range_end);
@@ -29,7 +33,7 @@ order = sqrt(((sin_theta1 + sin_theta2 + sin_theta3) / 3).^2 + ((cos_theta1 + co
 time = 0:(length(theta1)-1);
 
 % Plot the results
-figure;
+f = figure;
 subplot(2,1,1);
 hold on;
 plot(time, sin_theta1, 'r-', 'LineWidth', 0.5);
@@ -38,7 +42,7 @@ plot(time, sin_theta3, 'b-', 'LineWidth', 0.5);
 hold off;
 
 % Enhancing the plot
-title('Sine of Theta Values Over Time for Three Oscillators (Rhythm)');
+title(sprintf('Sine of Theta Values Over Time (%s: N=%d, K=%.1f)',type,N,K));
 xlabel('Time (arbitrary units)');
 ylabel('Sine of Theta');
 legend('Oscillator 1', 'Oscillator 2', 'Oscillator 3');
@@ -49,5 +53,6 @@ plot(time, order);
 title('Order Parameter');
 xlabel('Time (arbitrary units)');
 legend(['Order Parameter']);
-
+fontsize(f, 18,"points");
 grid on;
+axis([range_start range_end -0.1 1]);

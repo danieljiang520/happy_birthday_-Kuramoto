@@ -1,10 +1,10 @@
 clc;clear;close all;
 
-filename1 = 'no_coupling.csv';  % pitch data N=3, K=2.5 medium
-filename2 = 'quick.csv';  % rhythm data N=3, K=5 quick
+filename1 = 'medium.csv';  % pitch data N=3, K_p=2.5 medium
+filename2 = 'no_coupling.csv';  % tempo data N=3, K_t=5 quick
 N = 3;
-k_p = 0;
-k_r = 5;
+k_p = 2.5;
+k_t = 0;
 
 data1 = readtable(filename1, 'ReadVariableNames', false);
 data2 = readtable(filename2, 'ReadVariableNames', false);
@@ -29,10 +29,10 @@ traceLength = 10;
 f = figure;
 hold on;
 axis equal;
-xlabel('Cosine Rhythm');
-ylabel('Sine Rhythm');
+xlabel('Cosine Tempo');
+ylabel('Sine Tempo');
 zlabel('Sine Pitch');
-title(sprintf('Synchronization of Rhythm and Pitch (N=%d, k_r=%.1f, k_p=%.1f)',N,k_r,k_p));
+title(sprintf('Synchronization of Tempo and Pitch (N=%d, k_t=%.1f, k_p=%.1f)',N,k_t,k_p));
 grid on;
 xlim([-1.5 1.5]);
 ylim([-1.5 1.5]);

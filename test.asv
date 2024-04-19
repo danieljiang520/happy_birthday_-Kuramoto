@@ -1,2 +1,0 @@
-clc;clear;close all;
-h = kuramoto(3,2,0);
